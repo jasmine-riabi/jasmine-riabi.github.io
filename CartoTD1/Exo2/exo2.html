@@ -13,34 +13,39 @@
        <p id="x"></p>
        <p id="y"></p>
        <p id="z"></p>
-       <h2>Rotation</h2>
+       <h2>Accélération et Rotation</h2>
        <p id="x2"></p>
        <p id="y2"></p>
        <p id="z2"></p>
-       <h2>Accélération</h2>
+       <!-- <h2>Rotation</h2>
        <p id="x3"></p>
        <p id="y3"></p>
-       <p id="z3"></p> 
+       <p id="z3"></p>  -->
    </div>
 </body>
 
 <Script>
 
 window.addEventListener('deviceorientation', function(event) {
-  x.innerHTML = " x : " + event.beta;
-  y.innerHTML = " y : " + event.gamma;
-  z.innerHTML = " z : " + event.alpha;
+  x.innerHTML = " x (beta) : " + event.beta;
+  y.innerHTML = " y (gamma) : " + event.gamma;
+  z.innerHTML = " z (alpha) : " + event.alpha;
 });
 
 function handleMotionEvent(event) {
 
-    x2.innerHTML = " x : " + event.acceleration.x;
-    y2.innerHTML = " y : " + event.acceleration.y;
-    z2.innerHTML = " z : " + event.acceleration.z;
+    // x2.innerHTML = " x : " + event.acceleration.x;
+    // y2.innerHTML = " y : " + event.acceleration.y;
+    // z2.innerHTML = " z : " + event.acceleration.z;
 
-    x3.innerHTML = " x : " + event.rotationRate.x;
-    y3.innerHTML = " y : " + event.rotationRate.y;
-    z3.innerHTML = " z : " + event.rotationRate.z;
+    // x3.innerHTML = " x : " + event.rotationRate.x;
+    // y3.innerHTML = " y : " + event.rotationRate.y;
+    // z3.innerHTML = " z : " + event.rotationRate.z;
+
+    x2.innerHTML = " x : " + event.accelerationIncludingGravity.x;
+    y2.innerHTML = " y : " + event.accelerationIncludingGravity.y;
+    z2.innerHTML = " z : " + event.accelerationIncludingGravity.z;
+
 
 }
 
