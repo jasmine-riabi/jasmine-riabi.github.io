@@ -10,16 +10,27 @@
     <h1>Exo 1</h1>
    <div>
        <p id="coord"></p>
-       <p></p>
+       <p id="precision"></p>
        <p></p>
    </div>
 </body>
 
 <Script>
 var options = {enableHighAccuracy: true,timeout: 5000,maximumAge: 0};
+var id;
+
+var target = {
+  latitude : 43.61686966442319,
+  longitude: 7.072183396022971
+};
 
 function success(pos) {
   var crd = pos.coords;
+
+  if (target.latitude === crd.latitude && target.longitude === crd.longitude) {
+        precison.innerHTML = 'Bravo, vous avez atteint la cible';
+        navigator.geolocation.clearWatch(id);
+  }
 
   coord.innerText ='Votre position actuelle est : ';
   coord.innerText +=' Latitude : ' +  crd.latitude;
@@ -31,7 +42,9 @@ function error(err) {
   console.warn(`ERREUR (${err.code}): ${err.message}`);
 }
 
+id = navigator.geolocation.watchPosition(success, error, options);
 navigator.geolocation.getCurrentPosition(success, error, options);
+
 </Script>
 
 </html>
