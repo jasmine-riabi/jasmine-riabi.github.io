@@ -22,9 +22,9 @@ function success(pos) {
   var crd = pos.coords;
 
   coord.innerHTML ='Votre position actuelle est :';
-  coord.innerHTML +='Latitude :' +  $(crd.latitude);
-  coord.innerHTML += 'Longitude : '+  $(crd.longitude);
-  coord.innerHTML +='La précision est de ' + $(crd.accuracy) +' mètres.';
+  coord.innerHTML +='Latitude :' +  crd.latitude;
+  coord.innerHTML += 'Longitude : '+  crd.longitude;
+  coord.innerHTML +='La précision est de ' + crd.accuracy +' mètres.';
 }
 
 function error(err) {
