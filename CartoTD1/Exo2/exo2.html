@@ -7,9 +7,11 @@
     <title>Exo 2</title>
 </head>
 <body>
-    <h1>Exo 1</h1>
+    <h1>Exo 2</h1>
    <div>
-       <p id="coord"></p>
+       <p id="x"></p>
+       <p id="y"></p>
+       <p id="z"></p>
        <p id="motion"></p>
    </div>
 </body>
@@ -17,7 +19,9 @@
 <Script>
 
 window.addEventListener('deviceorientation', function(event) {
-  coord.innerHTML = "z : " + event.alpha + "\n x : " + event.beta + "\n y : " + event.gamma;
+  x.innerHTML = " x : " + event.alphe;
+  y.innerHTML = " y : " + event.beta;
+  z.innerHTML = " z : " + event.gamma ;
 });
 
 </Script>
