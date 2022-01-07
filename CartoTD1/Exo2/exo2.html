@@ -9,20 +9,42 @@
 <body>
     <h1>Exo 2</h1>
    <div>
+       <h2>Orientation</h2>
        <p id="x"></p>
        <p id="y"></p>
        <p id="z"></p>
-       <p id="motion"></p>
+       <h2>Rotation</h2>
+       <p id="x2"></p>
+       <p id="y2"></p>
+       <p id="z2"></p>
+       <h2>Accélération</h2>
+       <p id="x3"></p>
+       <p id="y3"></p>
+       <p id="z3"></p> 
    </div>
 </body>
 
 <Script>
 
 window.addEventListener('deviceorientation', function(event) {
-  x.innerHTML = " x : " + event.alpha;
-  y.innerHTML = " y : " + event.beta;
-  z.innerHTML = " z : " + event.gamma;
+  x.innerHTML = " x : " + event.beta;
+  y.innerHTML = " y : " + event.gamma;
+  z.innerHTML = " z : " + event.alpha;
 });
+
+function handleMotionEvent(event) {
+
+    x2.innerHTML = " x : " + event.acceleration.x;
+    y2.innerHTML = " y : " + event.acceleration.y;
+    z2.innerHTML = " z : " + event.acceleration.z;
+
+    x3.innerHTML = " x : " + event.rotationRate.x;
+    y3.innerHTML = " y : " + event.rotationRate.y;
+    z3.innerHTML = " z : " + event.rotationRate.z;
+
+}
+
+window.addEventListener("devicemotion", handleMotionEvent, true);
 
 </Script>
 
