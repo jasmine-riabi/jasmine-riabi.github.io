@@ -28,7 +28,7 @@ function success(pos) {
   coord.innerText ='Votre position actuelle est : ';
   coord.innerText +=' Latitude : ' +  crd.latitude;
   coord.innerHTML += ' Longitude : '+  crd.longitude;
-  coord.innerHTML +=' La précision est de ' + crd.longitude +' mètres.';
+  coord.innerHTML +=' La précision est de ' + crd.accuracy +' mètres.';
 
 var map = L.map('map').setView([crd.latitude, crd.longitude], 11);
 
