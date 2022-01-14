@@ -83,8 +83,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-L.marker([43.6961, 7.27178]).addTo(map);
-L.marker([43.3 , 5.4]).addTo(map);
 
 var markerFrom = L.marker([43.6961, 7.27178]).addTo(map);
 var markerTo =  L.marker([43.3 , 5.4]).addTo(map);
@@ -93,9 +91,8 @@ var to = markerTo.getLatLng();
 
 var latlngs = [ [43.6961, 7.27178], [43.3 , 5.4]];
 var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map)
-               .bindPopup("Marseille - Nice : " + (from.distanceTo(to)/1000).toFixed(0/1000000) + ' km')
+               .bindPopup("Marseille - Nice : " + (from.distanceTo(to)/1000).toFixed(0.1) + ' km')
                .openPopup();
-    
 }
 
 function error(err) {
