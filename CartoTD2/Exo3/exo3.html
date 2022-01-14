@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script type="text/javascript" src="https://stamen-maps.a.ssl.fastly.net/js/tile.stamen.js?v1.3.0"></script>
+    <script type="text/javascript" src="regions.geojson"></script>
+    <title>Exo 3</title>
+
+</head>
+<body>
+    <h1>Exo 3</h1>
+
+   <div id="map" style="height:500px"></div>
+
+</body>
+
+<Script>
+var options = {enableHighAccuracy: true,timeout: 5000,maximumAge: 0};
+
+function success(pos) {
+    const C_LATITUDE = 43.7005009
+    const C_LONGITUDE = 7.2679183
+    var map = L.map('map').setView([C_LATITUDE, C_LONGITUDE], 8);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.geoJSON(regions, {
+    pointToLayer: (feature, latlng) =>{
+        return L.marker(latlng)
+    }
+}).addTo(map)
+}
+
+function error(err) {
+  console.warn(`ERREUR (${err.code}): ${err.message}`);
+}
+
+navigator.geolocation.getCurrentPosition(success, error, options);
+
+</Script>
+
+</html>
