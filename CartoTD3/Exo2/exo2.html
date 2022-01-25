@@ -23,17 +23,20 @@
 			document.body.appendChild( renderer.domElement );
 
 			const geometry = new THREE.BoxGeometry();
-			const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-			const cube = new THREE.Mesh( geometry, material );
-      const light = new THREE.DirectionalLight( 0xb4e7f2, 1.5 );
-      light.position.set( 50, 50, 50 );
+
 
       const texture = new THREE.TextureLoader().load( "mosaique.jpeg" );
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
       texture.repeat.set( 4, 4 );
+			const material = new THREE.MeshPhongMaterial( { map : texture } );
 
+			const cube = new THREE.Mesh( geometry, material );
       scene.add( cube );
+
+      const light = new THREE.DirectionalLight( 0xb4e7f2, 1.8 );
+      light.position.set( 10, 10, 10 );
+      light.target = cube ;
       scene.add( light );
 			
 
