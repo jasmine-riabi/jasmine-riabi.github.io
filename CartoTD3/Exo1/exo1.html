@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <title>Exo 1</title>
+    <style type="text/css">
+        svg:hover {
+            fill: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Exo 1</h1>
+    <canvas id="canvas" width="780" height="460">
+        <!-- <img id="image" src="fond.jpeg" width="150" height="150" alt=""> -->
+    </canvas>
+
+    <div style="display:none;">
+        <img id="frame" src="fond.jpeg" width="780" height="460">
+    </div>
+
+    <svg width="710" height="500">
+
+        <rect width="710" height="300" style="fill:rgb(53, 138, 53)" />
+        <rect id="ciel" width="710" height="200" style="fill:rgb(120, 196, 219)" />    
+
+        <polygon points="30,200 140,30 280,200" style="fill:sienna;stroke:burlywood;stroke-width:5;fill-rule:nonzero;"/>
+        <polygon points="200,200 300,30 380,200" style="fill:sienna;stroke:burlywood;stroke-width:5;fill-rule:nonzero;"/>
+        <polygon points="400,200 500,30 600,200" style="fill:sienna;stroke:burlywood;stroke-width:5;fill-rule:nonzero;"/>
+        <polygon points="530,200 610,30 700,200" style="fill:sienna;stroke:burlywood;stroke-width:5;fill-rule:nonzero;"/>
+
+        <circle id="soleil" cx="610" cy="50" r="40" stroke="yellow" stroke-width="3" fill="yellow"/>
+
+        <polygon points="60,200 120,130 180,200" style="fill:rgb(160, 9, 9);fill-rule:nonzero;"/> 
+        <rect x="60" y="200" width="120" height="100" style="fill:rgb(180, 72, 0)" />
+        <rect id="porte" x="90" y="250" width="30" height="50" style="fill:rgb(75, 21, 4)" />
+
+
+
+    </svg>
+
+</body>
+
+<Script>
+
+window.addEventListener('load', function () {
+    let canvas = document.getElementById('canvas');
+  if (canvas.getContext) {
+    var ctx = canvas.getContext('2d');
+
+    //fond
+    ctx.drawImage(document.getElementById('frame'), 0, 0); 
+
+    //soleil
+    ctx.beginPath();
+    ctx.arc(560, 170, 50, 0,Math.PI + (Math.PI * 3) / 2, false);
+    ctx.fillStyle = 'rgb(255, 255, 0)';
+    ctx.strokeStyle = 'rgb(255, 255, 0)';
+    ctx.fill();
+    ctx.stroke();
+
+    //maison
+    ctx.beginPath(); 
+    ctx.lineWidth = 5;               
+    ctx.fillStyle = 'rgb(222, 90, 10)';
+    ctx.strokeStyle = 'rgb(129, 83, 55)'; 
+    ctx.rect(260, 280, 200, 280);
+    ctx.fillRect(260, 280, 200, 280);
+    ctx.stroke();
+
+    //porte
+    ctx.beginPath();
+    ctx.lineWidth = 7;
+    ctx.fillStyle = 'rgba(137, 73, 60)';
+    ctx.strokeStyle = 'rgb(129, 83, 55)';
+    ctx.rect(300, 380, 60, 380);
+    ctx.fillRect(300, 380, 60, 380); 
+    ctx.stroke();
+
+
+    // Toit
+    ctx.beginPath();
+    ctx.moveTo(360, 200);
+    ctx.lineTo(260, 280);
+    ctx.lineTo(460, 280);
+    ctx.lineTo(360, 200);
+    ctx.lineWidth = 7;
+    ctx.strokeStyle = 'rgb(129, 83, 55  )';
+    ctx.fillStyle = 'rgba(196, 55, 25)';
+    ctx.stroke();
+    ctx.fill();      
+  }});
+
+
+let colorCiel = 'rgb(120, 196, 219)'
+let colorPorte = 'rgb(75, 21, 4)'
+
+document.getElementById("soleil").addEventListener('click', () => {
+    let ciel = document.getElementById("ciel")
+    colorCiel = colorCiel == 'rgb(120, 196, 219)' ? "grey" : 'rgb(120, 196, 219)'
+    ciel.style.setProperty("fill", colorCiel)
+})
+
+let porte = document.getElementById("porte")
+porte.addEventListener('mouseover', () => {
+    colorPorte = colorPorte == 'rgb(75, 21, 4)' ? "pink" : 'rgb(75, 21, 4)'
+    porte.style.setProperty("fill", colorPorte)
+})
+
+
+</Script>
+
+</html>
