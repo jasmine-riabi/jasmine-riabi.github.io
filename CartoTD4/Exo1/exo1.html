@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <script type="text/javascript" src="https://stamen-maps.a.ssl.fastly.net/js/tile.stamen.js?v1.3.0"></script>
-    <title>Exo 2</title>
+    <title>Exo 1</title>
 
 </head>
 <body>
@@ -16,7 +16,7 @@
       // Javascript will go here.
 
       const scene = new THREE.Scene();
-			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+			const camera = new THREE.PerspectiveCamera( 750, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 			const renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
@@ -25,18 +25,18 @@
 			const geometry = new THREE.SphereGeometry();
 
 
-      const texture = new THREE.TextureLoader().load( "mosaique.jpeg" );
-      texture.wrapS = THREE.RepeatWrapping;
-      texture.wrapT = THREE.RepeatWrapping;
-      texture.repeat.set( 4, 4 );
+      const texture = new THREE.TextureLoader().load( "monde.webp" );
+       texture.wrapS = THREE.RepeatWrapping;
+       texture.wrapT = THREE.RepeatWrapping;
+      // texture.repeat.set( 4, 4 );
 			const material = new THREE.MeshPhongMaterial( { map : texture } );
 
-			const cube = new THREE.Mesh( geometry, material );
-      scene.add( cube );
+			const globe = new THREE.Mesh( geometry, material );
+      scene.add( globe );
 
-      const light = new THREE.DirectionalLight( 0xb4e7f2, 1.8 );
-      light.position.set( 10, 10, 10 );
-      light.target = cube ;
+      const light = new THREE.DirectionalLight( 0xb4e7f2, 1.2 );
+      light.position.set( 5, 5, 8 );
+      light.target = globe ;
       scene.add( light );
 			
 
@@ -46,8 +46,8 @@
 
 			function animate() {
 				requestAnimationFrame( animate );
-				cube.rotation.x += 0.01;
-				cube.rotation.y += 0.01;
+				//globe.rotation.x += 0.01;
+			  globe.rotation.y += 0.01;
 				renderer.render( scene, camera );
 			};
 
