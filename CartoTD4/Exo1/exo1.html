@@ -7,13 +7,14 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <script type="text/javascript" src="https://stamen-maps.a.ssl.fastly.net/js/tile.stamen.js?v1.3.0"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Exo 1</title>
 
 </head>
 <body>
     <script src="js/three.min.js"></script>
+    <script src="js/threeorb.js"></script>
     <script>
-      // Javascript will go here.
 
       const scene = new THREE.Scene();
 			const camera = new THREE.PerspectiveCamera( 750, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -24,34 +25,89 @@
 
 			const geometry = new THREE.SphereGeometry();
 
-
-      const texture = new THREE.TextureLoader().load( "monde.webp" );
-       texture.wrapS = THREE.RepeatWrapping;
-       texture.wrapT = THREE.RepeatWrapping;
-      // texture.repeat.set( 4, 4 );
+      const texture = new THREE.TextureLoader().load( "monde.jpeg" );
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
 			const material = new THREE.MeshPhongMaterial( { map : texture } );
 
 			const globe = new THREE.Mesh( geometry, material );
       scene.add( globe );
 
-      const light = new THREE.DirectionalLight( 0xb4e7f2, 1.2 );
-      light.position.set( 5, 5, 8 );
+      const light = new THREE.AmbientLight( 0xb4e7f2 );
+      light.position.set( 1, 1, 1 );
       light.target = globe ;
       scene.add( light );
 			
-
-
-
 			camera.position.z = 5;
+
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 			function animate() {
 				requestAnimationFrame( animate );
-				//globe.rotation.x += 0.01;
-			  globe.rotation.y += 0.01;
 				renderer.render( scene, camera );
 			};
+ 
+      animate();
 
-			animate();
+      function convert(lat, lon) {
+        var phi   = (91-lat)*(Math.PI/180);
+        var theta = (lon+170)*(Math.PI/180);
+
+        let x = -(Math.sin(phi)*Math.cos(theta));
+        let y = (Math.cos(phi));
+        let z = (Math.sin(phi)*Math.sin(theta));
+        
+        return new THREE.Vector3(x,y,z);
+      }
+
+      var options = {enableHighAccuracy: true,timeout: 5000,maximumAge: 0};
+
+      function success(position) {
+        const cartesiancoord = convert(position.coords.latitude, position.coords.longitude);
+        const geometryMP = new THREE.SphereGeometry(0.01, 32, 16);
+        const materialMP = new THREE.MeshBasicMaterial({ color: 0xf00000 });
+        const marker = new THREE.Mesh(geometryMP, materialMP);
+        marker.position.x = cartesiancoord.x;
+        marker.position.y = cartesiancoord.y;
+        marker.position.z = cartesiancoord.z;
+        scene.add(marker);
+      }
+
+    function error(err) {
+      console.warn(`ERREUR (${err.code}): ${err.message}`);
+    }
+
+    navigator.geolocation.getCurrentPosition(success,error, options);
+
+
+
+
+  var pays = new THREE.Group();
+
+    function getpays(){
+      const URL = "https://restcountries.com/v3.1/all"
+      fetch(URL)  
+          .then( (data) => data.json())
+          .then( (data) => {
+          data.forEach((item, i) => {
+            var cartesiancoordpays = convert(item['latlng'][0], item['latlng'][1]) ;
+            var geometryC = new THREE.SphereGeometry(0.01, 32, 16) ;
+            var textureC = new THREE.TextureLoader().load(item.flags.png);
+            var materialC = new THREE.MeshBasicMaterial({map: textureC}) ;
+            var positionpays = new THREE.Mesh(geometryC, materialC) ;
+
+            positionpays.position.x = cartesiancoordpays.x ;
+            positionpays.position.y = cartesiancoordpays.y ;
+            positionpays.position.z = cartesiancoordpays.z ;
+
+            pays.add(positionpays) ;
+          })
+    });
+    scene.add(pays) ;  
+    }
+
+    getpays();
+		
     </script>
 
 </body>
