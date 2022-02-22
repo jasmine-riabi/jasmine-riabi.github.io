@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script type="text/javascript" src="https://stamen-maps.a.ssl.fastly.net/js/tile.stamen.js?v1.3.0"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js "></script>
+    <script type="text/javascript" src="pays.geojson"></script>
+    <script type="text/javascript" src="capital.geojson"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+    <script src="https://labs.easyblog.it/maps/leaflet-list-markers/examples/cities-italy.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+<script src="https://labs.easyblog.it/maps/leaflet-list-markers/src/leaflet-list-markers.js"></script>
+<link href="https://labs.easyblog.it/maps/leaflet-list-markers/src/leaflet-list-markers.css" rel="stylesheet" />
+    <title>Projet</title>
+
+</head>
+<body>
+
+  <style>
+    #legend {
+      background-color:rgb(177, 177, 177);
+      display:flex; 
+      margin-top: 20px;
+    }
+
+    img{
+      height:60px;
+      width:20px;
+    }
+
+    figure{
+      align-items: right;
+      display:flex; 
+    }
+
+    #main{
+      display:flex; 
+      justify-content: space-between;
+    }
+
+    #lst{
+      position:relative;
+      overflow: scroll;
+      background-color:gray;
+    }
+
+    #map{
+      position:relative;
+      align-items:right;
+    }
+
+  </style>
+
+  <!-- <h1>Projet - Capital cities</h1> -->
+
+  <!-- <div id="main">
+    <div id="lst" style="height:500px; width:300px">
+    <h2 style="margin-left:20px">Liste des capitals</h2>
+    </div> 
+   <div id="map" style="height:500px; width:1000px"></div>
+  </div> -->
+
+  <div id="map" style="height:500px; width:width-max"></div> 
+
+  <!-- <div>
+    <button style="height:80px; width:80px; border-radius: 30px; font-size: 30px; color: white; background-color: black" type="button">3D</button>
+  </div> -->
+  <div id="legend">
+    <h2>Légende</h2>
+    <figure id="f1">
+      <img
+      src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png"
+      alt="Position actuelle">
+      <figcaption>Position actuelle</figcaption>
+    </figure>
+    <figure id="f2">
+      <img
+      src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png"
+      alt="Capital city">
+      <figcaption>Capital city</figcaption>
+    </figure>
+  </div>
+</body>
+
+<Script>
+var options = {enableHighAccuracy: true,timeout: 5000,maximumAge: 0};
+
+function success(pos) {
+
+    var crd = pos.coords;
+    var map = L.map('map',{ drawControl: true }).setView([crd.latitude,crd.longitude],5);
+    var greenIcon = new L.Icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+    });	
+    var redIcon = new L.Icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+    });		  	
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.marker([crd.latitude, crd.longitude],{icon: greenIcon}).addTo(map)
+    .bindPopup("Position actuelle")
+    .openPopup();
+
+    function distance(lat1, lon1, lat2, lon2, unit) {
+      if ((lat1 == lat2) && (lon1 == lon2)) {
+          return 0;
+      }
+      else {
+        var radlat1 = Math.PI * lat1/180;
+        var radlat2 = Math.PI * lat2/180;
+        var theta = lon1-lon2;
+        var radtheta = Math.PI * theta/180;
+        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+        if (dist > 1) {
+            dist = 1;
+        }
+        dist = Math.acos(dist);
+        dist = dist * 180/Math.PI;
+        dist = dist * 60 * 1.1515;
+        if (unit=="K") { dist = dist * 1.609344 }
+          if (unit=="N") { dist = dist * 0.8684 }
+            return dist;
+    }
+}
+  var markl = new L.LayerGroup(); 
+  map.addLayer(markl); 
+
+    function onEachFeature(feature, layer) {
+      var urlimg = "https://flagcdn.com/256x192/"+ feature.properties.ISO_A3.substring(0, 2).toLowerCase() +".png "
+      //console.log(urlimg);
+    if (feature.properties && feature.properties.ADMIN) {
+        layer.bindPopup('<a href="' + "https://en.wikipedia.org/wiki/"+feature.properties.ADMIN + '" target="_blank" rel="noopener">' + feature.properties.ADMIN + '</a>'
+        + ' <br> <img src= ' + urlimg +' >'
+        ); }
+    } 
+    
+    // function onEachFeature2(feature, layer) {
+    // if (feature.properties && feature.properties.city) {
+    //     layer.bindPopup('<a href="' + "https://en.wikipedia.org/wiki/"+feature.properties.city + '" target="_blank" rel="noopener">' + feature.properties.city + '</a>' 
+    //     + '<br>' + "Moi -> " + feature.properties.city + " " + Math.round(distance(crd.latitude,crd.longitude,feature.geometry.coordinates[1],feature.geometry.coordinates[0],"K")) + " km");
+    //   }
+
+    //} 
+
+    L.geoJSON(pays, {
+    pointToLayer: (feature, latlng) =>{
+        return L.marker(latlng);
+    }, 
+    onEachFeature: onEachFeature
+    }).addTo(map)
+
+    // L.geoJSON(capital, {
+    // pointToLayer: (feature, latlng) =>{
+    //     return L.marker(latlng,{icon: redIcon});
+    // }, 
+    // onEachFeature: onEachFeature2
+    // }).addTo(map)
+
+    // let data = []
+    // capital.features.map(elm => data.push(elm.properties.city))
+
+    // function appendData() {
+    //     var mainContainer = document.getElementById("lst");
+    //     for (var i = 0; i < data.length; i++) {
+    //         var div = document.createElement("div");
+    //         div.innerHTML = data[i];
+    //         div.style.marginLeft = "20px";
+    //         mainContainer.appendChild(div);
+    //     }
+    // }
+    // appendData(); 
+  
+  
+
+  L.geoJSON(capital, {
+    onEachFeature: function(feature, layer){
+        let marker = L.marker(L.latLng(feature.geometry.coordinates[1],feature.geometry.coordinates[0]), {
+        title: feature.properties.city
+      }).addTo(markl)
+      if (feature.properties && feature.properties.city) {
+        layer.bindPopup('<a href="' + "https://en.wikipedia.org/wiki/"+feature.properties.city + '" target="_blank" rel="noopener">' + feature.properties.city + '</a>' 
+        + '<br>' + "Moi -> " + feature.properties.city + " " + Math.round(distance(crd.latitude,crd.longitude,feature.geometry.coordinates[1],feature.geometry.coordinates[0],"K")) + " km");
+      }
+  
+    }
+    }).addTo(markl)
+
+	var list = new L.Control.ListMarkers({layer: markl, itemIcon: null});
+
+	map.addControl( list );
+    
+}
+
+function error(err) {
+  console.warn(`ERREUR (${err.code}): ${err.message}`);
+}
+
+
+navigator.geolocation.getCurrentPosition(success, error, options);
+
+</Script>
+
+</html>
